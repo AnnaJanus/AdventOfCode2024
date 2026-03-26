@@ -10,7 +10,7 @@ public class Day1 {
         System.out.println(sumDistance("src/test/java/Day1Data.txt"));
     }
 
-    public static int sumDistance(String filePath) {
+    private static int sumDistance(String filePath) {
         List<String> lines = new ArrayList<>();
         List<Integer> leftColumn = new ArrayList<>();
         List<Integer> rightColumn = new ArrayList<>();

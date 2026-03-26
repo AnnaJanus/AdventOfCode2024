@@ -12,7 +12,7 @@ public class Day1b {
         System.out.println(countSimilarity());
     }
 
-    public static void loadAndSortLocations(String filePath) {
+    private static void loadAndSortLocations(String filePath) {
         List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Path.of(filePath));
