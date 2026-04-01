@@ -37,4 +37,12 @@ public class Locations {
         }
         return sum;
     }
+
+    public int similiarity(){
+        int score = 0;
+        for(int i : leftColumn){
+           score += i * Collections.frequency(rightColumn,i);
+        }
+        return score;
+    }
 }
