@@ -15,4 +15,14 @@ public class XmasTest {
         //then number of Xmas found is correct
         assertEquals(18, counter, "Number of XMAS is not equal to the correct value");
     }
+
+    @Test
+    void allTheMasShouldBeFoundForTestData(){
+        //given we initialize word search with test data
+        WordSearch wordSearch = new WordSearch("src/main/resources/Day4-test.txt");
+        //when we find all the X-MAS
+        int counter = wordSearch.findMAS();
+        //then number of X-MAS found is correct
+        assertEquals(9, counter, "Number of X-MAS is not equal to the correct value");
+    }
 }
