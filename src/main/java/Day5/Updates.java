@@ -11,6 +11,8 @@ import java.util.Map;
 public class Updates {
     private final Map<Integer, List<Integer>> rulesMap = new HashMap<>();
     private final List<List<Integer>> updates = new ArrayList<>();
+    public int sumCorrect = 0;
+    public int sumIncorrect = 0;
 
     public Updates(Path datasource) {
         List<String> lines = new ArrayList<>();
@@ -37,24 +39,47 @@ public class Updates {
         System.out.println("");
     }
 
-    private int checkUpdate(List<Integer> update) {
+    private boolean checkUpdate(List<Integer> update) {
         for (int i = 1; i < update.size(); i++) {
             for (int j = 0; j < i; j++) {
                 if (rulesMap.get(update.get(i)) != null) {
                     if (rulesMap.get(update.get(i)).contains(update.get(j))) {
-                        return 0;
+                        return false;
                     }
                 }
             }
         }
-        return update.get(update.size() / 2);
+        return true;
     }
 
-    public int sumAllUpdates() {
-        int sum = 0;
+    public void sumAllUpdates() {
+
         for (List<Integer> update : updates) {
-            sum += checkUpdate(update);
+            if (checkUpdate(update)) {
+                sumCorrect += update.get(update.size() / 2);
+            } else {
+                List<Integer> ordered = orderUpdate(update);
+                sumIncorrect += ordered.get(update.size() / 2);
+            }
         }
-        return sum;
+    }
+
+    private List<Integer> orderUpdate(List<Integer> update) {
+        List<Integer> orderedUpdate = new ArrayList<>();
+        orderedUpdate.add(update.get(0));
+        for (int i = 1; i < update.size(); i++) {
+            boolean isAdded = false;
+            for (int j = 0; j < i; j++) {
+                if (rulesMap.get(update.get(i)) != null) {
+                    if (rulesMap.get(update.get(i)).contains(orderedUpdate.get(j))) {
+                        orderedUpdate.add(j, update.get(i));
+                        isAdded = true;
+                        break;
+                    }
+                }
+            }
+            if (!isAdded) orderedUpdate.add(update.get(i));
+        }
+        return orderedUpdate;
     }
 }

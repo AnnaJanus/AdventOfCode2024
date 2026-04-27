@@ -11,9 +11,23 @@ public class UpdateTest {
     void correctUpdatesShouldBeAddedUpProperly() {
         //given we initialize with test data
         Updates updates = new Updates(Path.of("src/main/resources/Day5-test.txt"));
-        //when we sum middle numbers of correct updates
-        int middleNumbersSum = updates.sumAllUpdates();
+        //when we sum middle numbers of updates
+        updates.sumAllUpdates();
+        //and get the sum of all middle numbers from correct updates
+        int middleNumbersSum = updates.sumCorrect;
         //then sum is as presented in AoC example
         assertEquals(143, middleNumbersSum, "Sum is incorrect");
+    }
+
+    @Test
+    void incorrectUpdatesShouldBeAddedUpProperly() {
+        //given we initialize with test data
+        Updates updates = new Updates(Path.of("src/main/resources/Day5-test.txt"));
+        //when we sum middle numbers of updates
+        updates.sumAllUpdates();
+        //and get the sum of all middle numbers from incorrect updates
+        int middleNumbersSum = updates.sumIncorrect;
+        //then sum is as presented in AoC example
+        assertEquals(123, middleNumbersSum, "Sum is incorrect");
     }
 }
