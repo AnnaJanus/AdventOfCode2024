@@ -18,12 +18,12 @@ class LocationsTest {
     }
 
     @Test
-    void locationShouldReturnSimiliarityScoreForTestData() {
+    void locationShouldReturnSimilarityScoreForTestData() {
         //given we initialize with test data
         Locations locations = new Locations(Path.of("src/main/resources/Day1-test.txt"));
-        //when we count similiarity score
-        int score = locations.similiarity();
+        //when we count similarity score
+        int score = locations.similarity();
         //then the score is as presented in example
-        assertEquals(31,score,"Similiarity scores are different");
+        assertEquals(31,score,"Similarity scores are different");
     }
 }
