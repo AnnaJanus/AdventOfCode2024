@@ -15,7 +15,7 @@ public class WordSearch {
     private char[][] charMatrix;
     private final String XMAS = "XMAS";
     private final String SAMX = "SAMX";
-    private final int SKIPPED_LENGHT_FOR_DIAGONALS = Math.min(XMAS.length(), SAMX.length()) - 1;
+    private final int SKIPPED_LENGTH_FOR_DIAGONALS = Math.min(XMAS.length(), SAMX.length()) - 1;
     private final Pattern patternXMAS = Pattern.compile(XMAS);
     private final Pattern patternSAMX = Pattern.compile(SAMX);
     private final Set<Character> modelSet = Set.of('M', 'S');
@@ -73,7 +73,7 @@ public class WordSearch {
         List<String> result = new ArrayList<>();
 
         // start z górnej krawędzi
-        for (int c = 0; c < cols - SKIPPED_LENGHT_FOR_DIAGONALS; c++) {
+        for (int c = 0; c < cols - SKIPPED_LENGTH_FOR_DIAGONALS; c++) {
             int r = 0;
             int col = c;
             StringBuilder sb = new StringBuilder();
@@ -87,7 +87,7 @@ public class WordSearch {
         }
 
         // start z lewej krawędzi (bez [0][0])
-        for (int r = 1; r < rows - SKIPPED_LENGHT_FOR_DIAGONALS; r++) {
+        for (int r = 1; r < rows - SKIPPED_LENGTH_FOR_DIAGONALS; r++) {
             int row = r;
             int c = 0;
             StringBuilder sb = new StringBuilder();
@@ -107,7 +107,7 @@ public class WordSearch {
         List<String> result = new ArrayList<>();
 
         // start z górnej krawędzi
-        for (int c = SKIPPED_LENGHT_FOR_DIAGONALS; c < cols; c++) {
+        for (int c = SKIPPED_LENGTH_FOR_DIAGONALS; c < cols; c++) {
             int r = 0;
             int col = c;
             StringBuilder sb = new StringBuilder();
@@ -121,7 +121,7 @@ public class WordSearch {
         }
 
         // start z prawej krawędzi (bez [0][cols-1])
-        for (int r = 1; r < rows - SKIPPED_LENGHT_FOR_DIAGONALS; r++) {
+        for (int r = 1; r < rows - SKIPPED_LENGTH_FOR_DIAGONALS; r++) {
             int row = r;
             int c = cols - 1;
             StringBuilder sb = new StringBuilder();
