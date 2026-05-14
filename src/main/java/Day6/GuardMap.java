@@ -13,7 +13,7 @@ public class GuardMap {
     public int startY;
     public List<List<Integer>> obstructions = new ArrayList<>();
     List<String> lines = new ArrayList<>();
-    Set<List<Integer>> steps = new HashSet<>();
+    Set<List<Integer>> positions = new HashSet<>();
 
     int xPosition;
     int yPosition;
@@ -25,9 +25,9 @@ public class GuardMap {
             {-1, 0}
     };
 
-    public GuardMap(Path datasource) {
+    public GuardMap(String datasource) {
         try {
-            lines = Files.readAllLines(datasource);
+            lines = Files.readAllLines(Path.of(datasource));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -37,6 +37,7 @@ public class GuardMap {
                 if (lines.get(y).charAt(x) == '^') {
                     startX = x;
                     startY = y;
+                    positions.add(List.of(startX,startY));
                 } else if (lines.get(y).charAt(x) == '#') {
                     obstructions.add(List.of(x, y));
                 }
@@ -63,21 +64,20 @@ public class GuardMap {
                 int newY = yPosition + dir[1];
                 if (obstructions.contains(List.of(newX, newY))) {
                     break;
-                } else if (newX <= 0 ||
-                        newY <= 0 ||
-                        newX > lines.get(0).length() ||
-                        newY > lines.size()) {
+                } else if (newX < 0 ||
+                        newY < 0 ||
+                        newX >= lines.get(0).length() ||
+                        newY >= lines.size()) {
                     finish = true;
                     break;
                 } else {
-                    System.out.println(List.of(newX, newY));
-                    steps.add(List.of(newX, newY));
+                    positions.add(List.of(newX, newY));
                     xPosition = newX;
                     yPosition = newY;
                 }
             }
             option++;
         }
-        return steps.size() - 1;
+        return positions.size();
     }
 }
