@@ -10,6 +10,4 @@ public class Day1 {
         System.out.println("Task 1: " + locations.sumDistances());
         System.out.println("Task 2: " + locations.similarity());
     }
-
-
 }
