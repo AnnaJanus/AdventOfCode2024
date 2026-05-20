@@ -1,5 +1,7 @@
 package Day5;
 
+import lombok.Getter;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,8 +13,10 @@ import java.util.Map;
 public class Updates {
     private final Map<Integer, List<Integer>> rulesMap = new HashMap<>();
     private final List<List<Integer>> updates = new ArrayList<>();
-    public int sumCorrect = 0;
-    public int sumIncorrect = 0;
+    @Getter
+    private int sumCorrect = 0;
+    @Getter
+    private int sumIncorrect = 0;
 
     public Updates(Path datasource) {
         List<String> lines = new ArrayList<>();
@@ -23,6 +27,10 @@ public class Updates {
             e.printStackTrace();
         }
 
+        readUpdatesAndRules(lines);
+    }
+
+    private void readUpdatesAndRules(List<String> lines) {
         for (String line : lines) {
             if (line.contains("|")) {
                 rulesMap.computeIfAbsent(
@@ -36,16 +44,14 @@ public class Updates {
                 updates.add(update);
             }
         }
-        System.out.println("");
     }
 
     private boolean checkUpdate(List<Integer> update) {
         for (int i = 1; i < update.size(); i++) {
             for (int j = 0; j < i; j++) {
-                if (rulesMap.get(update.get(i)) != null) {
-                    if (rulesMap.get(update.get(i)).contains(update.get(j))) {
-                        return false;
-                    }
+                if (rulesMap.get(update.get(i)) != null
+                        && rulesMap.get(update.get(i)).contains(update.get(j))) {
+                    return false;
                 }
             }
         }
@@ -70,12 +76,11 @@ public class Updates {
         for (int i = 1; i < update.size(); i++) {
             boolean isAdded = false;
             for (int j = 0; j < i; j++) {
-                if (rulesMap.get(update.get(i)) != null) {
-                    if (rulesMap.get(update.get(i)).contains(orderedUpdate.get(j))) {
-                        orderedUpdate.add(j, update.get(i));
-                        isAdded = true;
-                        break;
-                    }
+                if (rulesMap.get(update.get(i)) != null
+                        && rulesMap.get(update.get(i)).contains(orderedUpdate.get(j))) {
+                    orderedUpdate.add(j, update.get(i));
+                    isAdded = true;
+                    break;
                 }
             }
             if (!isAdded) orderedUpdate.add(update.get(i));

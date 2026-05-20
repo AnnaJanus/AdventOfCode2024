@@ -8,7 +8,7 @@ public class Day5 {
         Updates updates = new Updates(Path.of("src/main/resources/Day5Data.txt"));
         updates.sumAllUpdates();
 
-        System.out.println("Task 1:" + updates.sumCorrect);
-        System.out.println("Task 2:" + updates.sumIncorrect);
+        System.out.println("Task 1:" + updates.getSumCorrect());
+        System.out.println("Task 2:" + updates.getSumIncorrect());
     }
 }

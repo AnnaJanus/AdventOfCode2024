@@ -14,7 +14,7 @@ public class UpdateTest {
         //when we sum middle numbers of updates
         updates.sumAllUpdates();
         //and get the sum of all middle numbers from correct updates
-        int middleNumbersSum = updates.sumCorrect;
+        int middleNumbersSum = updates.getSumCorrect();
         //then sum is as presented in AoC example
         assertEquals(143, middleNumbersSum, "Sum is incorrect");
     }
@@ -26,7 +26,7 @@ public class UpdateTest {
         //when we sum middle numbers of updates
         updates.sumAllUpdates();
         //and get the sum of all middle numbers from incorrect updates
-        int middleNumbersSum = updates.sumIncorrect;
+        int middleNumbersSum = updates.getSumIncorrect();
         //then sum is as presented in AoC example
         assertEquals(123, middleNumbersSum, "Sum is incorrect");
     }
