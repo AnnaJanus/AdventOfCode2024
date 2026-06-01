@@ -9,38 +9,40 @@ import java.util.List;
 import java.util.Set;
 
 public class GuardMap {
-    public int startX;
-    public int startY;
-    public List<Point> obstructionsFromDataFile = new ArrayList<>();
-    List<String> lines = new ArrayList<>();
+    private Point startPoint;
+    private final List<Point> obstructionsFromDataFile = new ArrayList<>();
 
     private static final int LOOP_NUMBER = 5; // If the guard is in the same position for the 5th time - he is in a loop
 
-    int xPosition;
-    int yPosition;
+    private final Point currentPosition = new Point();
 
-    int[][] directions = {
-            {0, -1},
-            {1, 0},
-            {0, 1},
-            {-1, 0}
+    private final Point[] directions = {
+            new Point(0, -1),
+            new Point(1, 0),
+            new Point(0, 1),
+            new Point(-1, 0)
     };
 
-    public record GuardRun(int uniquePositions, boolean loop, List<Point> positions) {}
-    public record Point(int x, int y){}
+    private int width;
+    private int height;
+
+    public record GuardRun(int uniquePositions, boolean loop, List<Point> positions) {
+    }
 
     public GuardMap(String datasource) {
+        List<String> lines = new ArrayList<>();
         try {
             lines = Files.readAllLines(Path.of(datasource));
+            width = lines.get(0).length();
+            height = lines.size();
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        for (int y = 0; y < lines.size(); y++) {
+        for (int y = 0; y < height; y++) {
             for (int x = 0; x < lines.get(y).length(); x++) {
                 if (lines.get(y).charAt(x) == '^') {
-                    startX = x;
-                    startY = y;
+                    startPoint = new Point(x, y);
                 } else if (lines.get(y).charAt(x) == '#') {
                     obstructionsFromDataFile.add(new Point(x, y));
                 }
@@ -48,70 +50,73 @@ public class GuardMap {
         }
     }
 
-    public int countPossibleObstructions(){
+    public int countPossibleObstructions() {
         int counter = 0;
         Set<Point> positions = new HashSet<>(runGuard().positions);
-        positions.remove(new Point(startX, startY));
-        for(Point point : positions){
+        positions.remove(new Point(startPoint.getX(), startPoint.getY()));
+        for (Point point : positions) {
             List<Point> obstructions = new ArrayList<>(obstructionsFromDataFile);
             obstructions.add(point);
-            if (runGuard(obstructions).loop){
+            if (runGuard(obstructions).loop) {
                 counter++;
             }
         }
         return counter;
     }
 
-    public GuardRun runGuard(){
+    public GuardRun runGuard() {
         return runGuard(obstructionsFromDataFile);
     }
 
     public GuardRun runGuard(List<Point> obstructions) {
         List<Point> positions = new ArrayList<>();
-        positions.add(new Point(startX, startY));
+        positions.add(startPoint);
 
-        xPosition = startX;
-        yPosition = startY;
+        currentPosition.setX(startPoint.getX());
+        currentPosition.setY(startPoint.getY());
 
         int option = 0;
         boolean finish = false;
         boolean loop = false;
 
-        while (xPosition >= 0 &&
-                yPosition >= 0 &&
-                xPosition < lines.get(0).length() &&
-                yPosition < lines.size() &&
+        while (isOnMap(currentPosition) &&
                 !finish &&
                 !loop) {
 
-            int[] dir = directions[option % 4];
+            Point dir = directions[option % 4];
 
             while (!loop) {
-                int newX = xPosition + dir[0];
-                int newY = yPosition + dir[1];
-                if (obstructions.contains(new Point(newX, newY))) {
+                Point nextPoint = new Point(currentPosition.getX() + dir.getX(),
+                        currentPosition.getY() + dir.getY());
+                if (obstructions.contains(nextPoint)) {
                     break;
-                } else if (newX < 0 ||
-                        newY < 0 ||
-                        newX >= lines.get(0).length() ||
-                        newY >= lines.size()) {
+                } else if (!isOnMap(nextPoint)) {
                     finish = true;
                     break;
                 } else {
-                    positions.add(new Point(newX, newY));
-                    xPosition = newX;
-                    yPosition = newY;
-                    long count = positions.stream()
-                            .filter(p -> p.equals(new Point(newX, newY)))
-                            .count();
-                    if (count == LOOP_NUMBER) {
-                        loop = true;
-                    }
+                    loop = takeTheNextStepAndCheckIfYouAreStuck(positions, nextPoint);
                 }
             }
             option++;
         }
         Set<Point> uniquePositions = new HashSet<>(positions);
         return new GuardRun(uniquePositions.size(), loop, positions);
+    }
+
+    private boolean takeTheNextStepAndCheckIfYouAreStuck(List<Point> positions, Point nextPoint) {
+        positions.add(nextPoint);
+        currentPosition.setX(nextPoint.getX());
+        currentPosition.setY(nextPoint.getY());
+        long count = positions.stream()
+                .filter(p -> p.equals(nextPoint))
+                .count();
+        return count == LOOP_NUMBER;
+    }
+
+    private boolean isOnMap(Point p) {
+        return p.getX() >= 0 &&
+                p.getY() >= 0 &&
+                p.getX() < width &&
+                p.getY() < height;
     }
 }
