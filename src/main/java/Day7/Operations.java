@@ -18,21 +18,22 @@ public class Operations {
         }
     }
 
-    public long sumOperations(){
+    public long sumOperations(int numberOfOperators) {
         long sum = 0;
-        for(String line: lines){
+        for (String line : lines) {
             sum += checkLine(Long.parseLong(line.split(":")[0]),
                     Arrays.stream(line.split(":")[1].trim().split("\\s+"))
-                    .map(Long::parseLong)
-                    .toList());
+                            .map(Long::parseLong)
+                            .toList(),
+                    numberOfOperators);
         }
         return sum;
     }
 
 
-    private long checkLine(long expectedResult, List<Long> numbers) {
-        for (int mask = 0; mask < Math.pow(2, numbers.size() - 1); mask++) {
-            long result = count(numbers, mask);
+    private long checkLine(long expectedResult, List<Long> numbers, int numberOfOperators) {
+        for (int mask = 0; mask < Math.pow(numberOfOperators, numbers.size() - 1); mask++) {
+            long result = count(numbers, mask, numberOfOperators);
             if (result == expectedResult) {
                 return result;
             }
@@ -41,24 +42,26 @@ public class Operations {
     }
 
 
-    private long count(List<Long> numbers, int mask) {
-        char[] signs = readMask(mask, numbers.size()).toCharArray();
+    private long count(List<Long> numbers, int mask, int numberOfOperators) {
+        char[] signs = readMask(mask, numbers.size(), numberOfOperators).toCharArray();
         long result = numbers.get(0);
         int numberIndex = 1;
         for (int sign : signs) {
             if (sign == '0') {
                 result += numbers.get(numberIndex);
-            } else {
+            } else if (sign == '1') {
                 result *= numbers.get(numberIndex);
+            } else {
+                result = Long.parseLong(String.valueOf(result) + numbers.get(numberIndex));
             }
             numberIndex++;
         }
         return result;
     }
 
-    private String readMask(int mask, int arraySize){
-        StringBuilder maskString = new StringBuilder(Integer.toBinaryString(mask));
-        for(int i = maskString.length(); i < arraySize - 1; i++){
+    private String readMask(int mask, int arraySize, int numberOfOperators) {
+        StringBuilder maskString = new StringBuilder(Integer.toString(mask, numberOfOperators));
+        for (int i = maskString.length(); i < arraySize - 1; i++) {
             maskString.insert(0, "0");
         }
         return maskString.toString();
