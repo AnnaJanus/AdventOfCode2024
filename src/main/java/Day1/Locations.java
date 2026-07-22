@@ -1,5 +1,7 @@
 package Day1;
 
+import lombok.SneakyThrows;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -11,14 +13,9 @@ public class Locations {
     private final List<Integer> leftColumn = new ArrayList<>();
     private final List<Integer> rightColumn = new ArrayList<>();
 
+    @SneakyThrows
     public Locations(Path datasource) {
-        List<String> lines = new ArrayList<>();
-
-        try {
-            lines = Files.readAllLines(datasource);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<String> lines = Files.readAllLines(datasource);
 
         for (String line : lines) {
             this.leftColumn.add(Integer.valueOf(line.split(" +")[0]));

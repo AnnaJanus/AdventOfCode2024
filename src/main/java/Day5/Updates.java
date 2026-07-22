@@ -1,6 +1,7 @@
 package Day5;
 
 import lombok.Getter;
+import lombok.SneakyThrows;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -18,14 +19,9 @@ public class Updates {
     @Getter
     private int sumIncorrect = 0;
 
+    @SneakyThrows
     public Updates(Path datasource) {
-        List<String> lines = new ArrayList<>();
-
-        try {
-            lines = Files.readAllLines(datasource);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        List<String> lines = Files.readAllLines(datasource);
 
         readUpdatesAndRules(lines);
     }

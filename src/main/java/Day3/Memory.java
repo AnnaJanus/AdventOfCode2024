@@ -1,5 +1,7 @@
 package Day3;
 
+import lombok.SneakyThrows;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -22,13 +24,9 @@ public class Memory {
     private final Pattern MUL_SPLIT_PATTERN = Pattern.compile(ACTIVE_CODE_REGEX);
     private String data;
 
-
+    @SneakyThrows
     public Memory(String datasource) {
-        try {
-            data = Files.readString(Path.of(datasource));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        data = Files.readString(Path.of(datasource));
         data = data.replace("\n", "");
     }
 
