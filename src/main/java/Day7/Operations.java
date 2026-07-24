@@ -21,8 +21,9 @@ public class Operations {
     public long sumOperations(int numberOfOperators) {
         long sum = 0;
         for (String line : lines) {
-            sum += checkLine(Long.parseLong(line.split(":")[0]),
-                    Arrays.stream(line.split(":")[1].trim().split("\\s+"))
+            String[] split = line.split(":");
+            sum += checkLine(Long.parseLong(split[0]),
+                    Arrays.stream(split[1].trim().split("\\s+"))
                             .map(Long::parseLong)
                             .toList(),
                     numberOfOperators);
