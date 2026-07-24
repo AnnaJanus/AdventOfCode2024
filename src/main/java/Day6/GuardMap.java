@@ -1,5 +1,6 @@
 package Day6;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 
 public class GuardMap {
     private Point startPoint;
@@ -53,7 +55,7 @@ public class GuardMap {
     public int countPossibleObstructions() {
         int counter = 0;
         Set<Point> positions = new HashSet<>(runGuard().positions);
-        positions.remove(new Point(startPoint.getX(), startPoint.getY()));
+        positions.remove(new Point((int) startPoint.getX(), (int) startPoint.getY()));
         for (Point point : positions) {
             List<Point> obstructions = new ArrayList<>(obstructionsFromDataFile);
             obstructions.add(point);
@@ -72,8 +74,7 @@ public class GuardMap {
         List<Point> positions = new ArrayList<>();
         positions.add(startPoint);
 
-        currentPosition.setX(startPoint.getX());
-        currentPosition.setY(startPoint.getY());
+        currentPosition.setLocation(startPoint.getX(), startPoint.getY());
 
         int option = 0;
         boolean finish = false;
@@ -86,8 +87,8 @@ public class GuardMap {
             Point dir = directions[option % 4];
 
             while (!loop) {
-                Point nextPoint = new Point(currentPosition.getX() + dir.getX(),
-                        currentPosition.getY() + dir.getY());
+                Point nextPoint = new Point((int) (currentPosition.getX() + dir.getX()),
+                        (int) (currentPosition.getY() + dir.getY()));
                 if (obstructions.contains(nextPoint)) {
                     break;
                 } else if (!isOnMap(nextPoint)) {
@@ -105,8 +106,7 @@ public class GuardMap {
 
     private boolean takeTheNextStepAndCheckIfYouAreStuck(List<Point> positions, Point nextPoint) {
         positions.add(nextPoint);
-        currentPosition.setX(nextPoint.getX());
-        currentPosition.setY(nextPoint.getY());
+        currentPosition.setLocation(nextPoint.getX(), nextPoint.getY());
         long count = positions.stream()
                 .filter(p -> p.equals(nextPoint))
                 .count();
