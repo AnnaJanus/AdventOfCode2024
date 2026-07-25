@@ -1,18 +1,20 @@
 package Day2;
 
-import lombok.SneakyThrows;
-
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Reports {
-    private final List<String> reports;
+    List<String> reports = new ArrayList<>();
 
-    @SneakyThrows
     public Reports(String datasource) {
-        reports = Files.readAllLines(Path.of(datasource));
+        try {
+            reports = Files.readAllLines(Path.of(datasource));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private List<Integer> splitNumbersInReport(String report) {
