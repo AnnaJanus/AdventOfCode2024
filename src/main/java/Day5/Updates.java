@@ -1,7 +1,5 @@
 package Day5;
 
-import lombok.Getter;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -13,9 +11,7 @@ import java.util.Map;
 public class Updates {
     private final Map<Integer, List<Integer>> rulesMap = new HashMap<>();
     private final List<List<Integer>> updates = new ArrayList<>();
-    @Getter
     private int sumCorrect = 0;
-    @Getter
     private int sumIncorrect = 0;
 
     public Updates(Path datasource) {
@@ -28,6 +24,14 @@ public class Updates {
         }
 
         readUpdatesAndRules(lines);
+    }
+
+    public int getSumCorrect() {
+        return sumCorrect;
+    }
+
+    public int getSumIncorrect() {
+        return sumIncorrect;
     }
 
     private void readUpdatesAndRules(List<String> lines) {
