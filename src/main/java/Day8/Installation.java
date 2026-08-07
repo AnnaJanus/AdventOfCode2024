@@ -13,6 +13,7 @@ public class Installation {
     private final List<Antenna> antennas = new ArrayList<>();
     private final Map<Character, List<Antenna>> segregatedAntennas = new HashMap<>();
     Set<Point> antinodes = new HashSet<>();
+    Set<Point> antinodesPartTwo = new HashSet<>();
 
     public Installation(String datasource) {
         List<String> lines = new ArrayList<>();
@@ -29,6 +30,7 @@ public class Installation {
 
         for (Character c : segregatedAntennas.keySet()) {
             findAntinodes(segregatedAntennas.get(c));
+            findAntinodesPartTwo(segregatedAntennas.get(c));
         }
     }
 
@@ -57,10 +59,23 @@ public class Installation {
     private void findAntinodes(List<Antenna> oneTypeAntennas) {
         for (int i = 0; i < oneTypeAntennas.size(); i++) {
             for (int j = 0; j < i; j++) {
-                List<Point> antinodesHelper = oneTypeAntennas.get(i).findAntinodes(oneTypeAntennas.get(j));
+                Set<Point> antinodesHelper = oneTypeAntennas.get(i).findAntinodes(oneTypeAntennas.get(j));
                 for (Point point : antinodesHelper) {
                     if(point.x >= 0 && point.x < width && point.y >= 0 && point.y < height){
                         antinodes.add(point);
+                    }
+                }
+            }
+        }
+    }
+
+    private void findAntinodesPartTwo(List<Antenna> oneTypeAntennas) {
+        for (int i = 0; i < oneTypeAntennas.size(); i++) {
+            for (int j = 0; j < i; j++) {
+                Set<Point> antinodesHelper = oneTypeAntennas.get(i).findAntinodes(oneTypeAntennas.get(j), width, height);
+                for (Point point : antinodesHelper) {
+                    if(point.x >= 0 && point.x < width && point.y >= 0 && point.y < height){
+                        antinodesPartTwo.add(point);
                     }
                 }
             }
